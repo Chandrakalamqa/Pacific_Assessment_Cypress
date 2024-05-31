@@ -1,0 +1,59 @@
+1. How does Cypress handle asynchronous operations and why is this beneficial?
+Answer: Cypress automatically handles asynchronous operations through a built-in promise chain. This means that Cypress commands are queued and executed in order, and Cypress waits for each command to complete before moving on to the next one. This includes waiting for elements to appear, responses to return, and animations to finish. Cypress does this by automatically retrying commands until they pass or a timeout is reached.
+
+Benefits:
+
+a) Simplicity: We don't need to write complex code to handle asynchronous behavior, making tests easier to write and understand.
+b) Reliability: Automatic retries ensure that tests are less flaky and more reliable, as they wait for elements and conditions to be met.
+c) Readability: Tests are written in a straightforward, synchronous-like style, making them easier to read and maintain.
+
+2. How would We mock an API response in a Cypress test? Provide a brief example.
+Answer: To mock an API response in a Cypress test, We can use the 'cy.intercept()' function to intercept network requests and provide a mocked response. Here’s a brief example:
+
+Example:
+
+describe('Mocking API response', () => {
+  it('should display mocked data', () => {
+    
+    cy.intercept('GET', '/api/data', {
+      statusCode: 200,
+      body: {
+        data: 'Mocked Data'
+      }
+    }).as('getData');
+
+    cy.visit('/Wer-page');
+
+    cy.wait('@getData');
+
+    cy.get('#data-element').should('have.text', 'Mocked Data');
+  });
+});
+
+3. Explain how Cypress handles test retries on failures. How can We configure it?
+Answer:
+Cypress can automatically retry failed tests using its built-in retry mechanism. This feature is useful for dealing with transient issues such as network flakiness or timing issues. Cypress retries failed assertions and commands within a test until they pass or until the specified timeout is reached.
+
+Configuration:
+
+We can configure test retries in the 'cypress.config.js' file. Here's an example of how to enable and configure retries:
+
+module.exports = {
+  retries: {
+    // Configure retries for 'cypress run'
+    runMode: 2, // Retry failed tests twice when running in CI or headless mode
+    // Configure retries for 'cypress open'
+    openMode: 1 // Retry failed tests once when running interactively in the 			Cypress Test Runner
+  }
+};
+
+Example:
+
+describe('Test retries', () => {
+  it('should retry the test on failure', () => {
+    cy.visit('/Wer-page');
+
+    // This will automatically retry until it finds the element or times out
+    cy.get('#element-that-might-flake').should('be.visible');
+  });
+});

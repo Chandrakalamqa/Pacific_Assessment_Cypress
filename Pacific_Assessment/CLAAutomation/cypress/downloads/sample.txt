@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Page</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+		.info {
+			border-style: solid;
+			width: 50%;	 
+			display: flex;
+			  flex-wrap: nowrap;		
+					}
+		
+		.header-section {
+		  font-weight: bold;
+		  padding: 10px;
+		  flex: 50%;
+		}
+
+		.data-section {		  
+		  padding: 10px;
+		  flex: 50%;
+		}				
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Sample Page</h1>
+    <p id="intro">This is a sample paragraph to demonstrate Cypress test cases.</p>
+
+    <div id="form-section">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+        <br>
+		<br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <br>
+		<br>
+        <button id="login-btn" class="btn">Login</button>
+    </div>
+
+    <div id="hidden-section" class="hidden">
+        <p>Congratulations! You are logged in.</p>
+    </div>
+	
+	<br>
+	<br>
+	 <h3>Information: </h3>
+	<div class="info">
+		<div class = "header-section">
+			<p>Country</p>
+			<p>Province</p>
+			<p>Date</p>
+		</div> 
+		<div class = "data-section">
+			<p>Canada</p>
+			<p>British Columbia</p>
+			<p><span id="current-date"></span></p>	  
+		</div> 	
+	</div>	
+	
+ <script>
+        function formatDate(date) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentDate = new Date();
+            const formattedDate = formatDate(currentDate);
+            document.getElementById('current-date').innerText = formattedDate;
+        });
+    </script>
+
+    <script>
+        document.getElementById('login-btn').addEventListener('click', function() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            if(username === 'user' && password === 'pass') {
+                document.getElementById('hidden-section').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
